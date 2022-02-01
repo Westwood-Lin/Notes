@@ -1,0 +1,177 @@
+## 1.什么是lombok？
+
+JDK 5.0中引入了java的注解机制，比如子类重写父类时使用@override。
+
+lombok可以看做是**一种增强Java注解机制的插件**。它可以通过简单的注解形式来消除一些必须有但不需设计的Java代码。通过使用对应的注解，可以在编译源码的时候生成对应的方法。
+
+比如在某个属性前使用@setter ，自动生成该属性的set方法。
+
+
+
+## 2.用法
+
+#### 2.1 引入
+
+IDEA中集成了lombok，只需要在maven里添加它的依赖即可使用。
+
+```xml
+<dependency>
+	<groupId>org.projectlombok</groupId>
+	<artifactId>lombok</artifactId>
+	<version>1.18.4</version>
+	<scope>provided</scope>
+</dependency>
+
+```
+
+
+
+#### 2.2 使用
+
+常用的不到十个，主要有：
+
+| 写法                     | 注解对象 | 作用                                                         |
+| ------------------------ | -------- | ------------------------------------------------------------ |
+| @Setter                  | 类或字段 | 注解在类时为所有字段生成setter方法，注解在字段上时只为该字段生成setter方法。 |
+| @Getter                  | 类或字段 | 注解在类时为所有字段生成setter方法，注解在字段上时只为该字段生成getter方法。 |
+| @ToString                | 类       | 为类添加toString方法                                         |
+| @EqualsAndHashCode       | 类       | 生成hashCode和equals方法。（equals方法是比较属性值是否相等） |
+| @NoArgsConstructor       | 类       | 生成无参的构造方法                                           |
+| @RequiredArgsConstructor | 类       | 为类中需要特殊处理的字段生成构造方法，比如final和被@NonNull注解的字段。 |
+| @AllArgsConstructor      | 类       | 生成包含类中所有字段的构造方法。                             |
+| @Data  慎用              | 类       | 注解在类，生成setter/getter、equals、canEqual、hashCode、toString方法，如为final属性，则不会为该属性生成setter方法。 |
+| @Slf4j   慎用            | 类       | 生成log变量，严格意义来说是常量。private static final Logger log = LoggerFactory.getLogger(UserController.class); |
+
+
+
+##### 2.2.1	Getter 和 Setter
+
+> 可以用@Getter / @Setter注释任何字段和类，让lombok自动生成默认的getter / setter方法。
+>  默认生成的方法是驼峰命名法。并且是public的，如果要修改方法修饰符可以设置**AccessLevel**的值，例如：***@Getter(access = AccessLevel.PROTECTED)\***
+
+> ![img](lombok笔记.assets/webp.webp)
+
+
+
+##### 2.2.2	ToString
+
+> 生成toString()方法，默认情况下，它会按顺序（以逗号分隔）打印你的类名称以及每个字段。可以这样设置不包含哪些字段***@ToString(exclude = "id")\*** / ***@ToString(exclude = {"id","name"})\***
+>  如果继承的有父类的话，可以设置**callSuper** 让其调用父类的toString()方法，例如：*@ToString(callSuper = true)
+
+```java
+import lombok.ToString;
+@ToString(exclude = {"id","name"})
+public class User {
+  private Integer id;
+  private String name;
+  private String phone;
+}
+```
+
+生成的toString：
+
+```java
+public String toString(){
+  return "User(phone=" + phone + ")";
+}
+```
+
+
+
+##### 2.2.3	EqualsAndHashCode
+
+> 生成hashCode()和equals()方法，默认情况下，它将使用所有非静态，非transient字段。但可以通过在可选的exclude参数中来排除更多字段。或者，通过在parameter参数中命名它们来准确指定希望使用哪些字段。
+>
+> 这里的equals方法是通过类中成员的值来判断是否相等。
+
+
+
+##### 2.2.4	@NoArgsConstructor, @RequiredArgsConstructor, @AllArgsConstructor
+
+> @NoArgsConstructor生成一个无参构造方法。当类中有final字段没有被初始化时，编译器会报错，此时可用@NoArgsConstructor(force = true)，然后就会为没有初始化的final字段设置默认值 0 / false / null。对于具有约束的字段（例如@NonNull字段），不会生成检查或分配，因此请注意，正确初始化这些字段之前，这些约束无效。
+
+> @RequiredArgsConstructor会生成构造方法（可能带参数也可能不带参数），如果带参数，这参数只能是以final修饰的未经初始化的字段，或者是以@NonNull注解的未经初始化的字段。
+>  @RequiredArgsConstructor(staticName = "of")会生成一个of()的静态方法，并把构造方法设置为私有的。
+
+> @AllArgsConstructor 生成一个全参数的构造方法。
+
+
+
+##### 2.2.5	@Data
+
+> @Data 包含了 @ToString、@EqualsAndHashCode、@Getter / @Setter和@RequiredArgsConstructor的功能。因为包含的较多，一般慎用。
+
+
+
+##### 2.2.6	@Synchronized
+
+> 给方法加上同步锁
+
+
+
+##### 2.2.7	**@Log4j**
+
+> 注解在 **类** 上；为类提供一个 属性名为 log 的 log4j 日志对象，提供默认构造方法。
+
+
+
+##### 2.2.8	**@SneakyThrows**
+
+这个注解用在 **方法** 上，可以将方法中的代码用 try-catch 语句包裹起来，捕获异常并在 catch 中用 Lombok.sneakyThrow(e) 把异常抛出，可以使用 @SneakyThrows(Exception.class) 的形式指定抛出哪种异常，也会生成默认的构造方法。
+
+## 3.原理
+
+#### 编译时注解
+
+\> 注解（也被成为元数据）为我们在代码中添加信息提供了一种形式化的方法，使我们可以在稍后某个时刻非常方便地使用这些数据。——————摘自《Thinking in Java》
+
+Java中的注解分为运行时注解和编译时注解，运行时注解就是我们经常使用的在程序运行时通过反射得到我们注解的信息，然后再做一些操作。而编译时注解是什么呢？就是在程序在编译期间通过注解处理器进行处理。
+
+- 编译期：Java语言的编译期是一段不确定的操作过程，因为它可能是将*.java文件转化成*.class文件的过程；也可能是指将字节码转变成机器码的过程；还可能是直接将*.java编译成本地机器代码的过程
+- 运行期：从JVM加载字节码文件到内存中，到最后使用完毕以后卸载的过程都属于运行期的范畴。
+
+## 4.利弊及使用场景
+
+#### 优势：
+
+节省写“理所当然的代码”的时间
+
+#### 劣势：
+
+1. **高侵入性，强迫队友**
+
+Lombok插件的使用，要求开发者一定要在IDE中安装对应的插件。不仅自己要安装，任何和你协同开发的人都要安装。如果有谁未安装插件的话，使用IDE打开一个基于Lombok的项目的话会提示找不到方法等错误，导致项目编译失败。更重要的是，如果我们定义的一个jar包中使用了Lombok，那么就要求所有依赖这个jar包的所有应用都必须安装插件，这种侵入性是很高的。
+
+2. **可调试性降低**（找不到get、set方法）
+
+Lombok会在编译阶段生成代码，所以在开发中，很多代码是缺失的。这就给代码调试带来一定的问题，我们想要知道某个类中的某个属性的getter方法都被哪些类引用的话，就没那么简单了。
+
+3. **影响版本升级**
+
+ombok作为一个第三方工具，并且是由开源团队维护的，那么他的迭代速度是无法保证的。
+
+4. **注解使用有风险**
+
+   在使用Lombok过程中，如果对于各种注解的底层原理不理解的话，很容易产生意想不到的结果。举一个简单的例子：我们知道，当我们使用@Data定义一个类的时候，会自动帮我们生成equals()方法 。但是如果只使用了@Data，而不使用@EqualsAndHashCode(callSuper=true)的话，会默认是@EqualsAndHashCode(callSuper=false)，这时候生成的equals()方法只会比较子类的属性，不会考虑从父类继承的属性，无论父类属性访问权限是否开放，这就可能得到意想不到的结果。
+
+5. **可能会破坏封装性**
+
+
+
+#### 使用场景：
+
+作业、刷题、简单的不需长期更新维护的项目。
+
+
+
+## 参考
+
+简书： https://www.jianshu.com/p/365ea41b3573
+
+知乎：
+
+https://zhuanlan.zhihu.com/p/138217840
+
+https://zhuanlan.zhihu.com/p/272516657
+
+官方文档：https://projectlombok.org/features/all
