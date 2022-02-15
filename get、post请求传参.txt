@@ -1,0 +1,193 @@
+# 0、参考：
+
+https://cloud.tencent.com/developer/article/1710394#
+
+# 1、get请求
+
+get请求一般用来向服务器请求获取数据.
+
+get请求下主要是2种传参类型:
+
+- 多参数拼接
+- 路径标识参数
+
+
+
+## 1.1	参数拼接
+
+#### 传参：
+
+这是最常见的传参方式,它传参方式如下:
+
+```javascript
+GET: /api/user?name=felord.cn&age=18 HTTP/1.1
+```
+
+规则为:
+
+- URL和参数之间用 **'?'** 连接,
+- 参数和参数之间用 **'&'** 连接
+- 参数的key和value之间用 **'='** 连接.
+
+
+
+#### 接收：
+
+在Spring MVC中,这种参数可以被以下方式拦截/处理/接收：
+
+```java
+@GetMapping("/user")
+public Rest<?> urlEncode(User params) {
+    // params.name = felord.cn
+    // params.age = 18
+    return RestBody.okData(params);
+}
+```
+
+#### 注意：
+
+- 它是最常见的传参方式 
+- URL 的长度是有限制的，如果 GET 请求包含了过于复杂的参数组合，说明业务设计有问题:
+- 通过`HttpServletRequest#getParameter(String key)`也可以获取上述方式携带的参数，但是一般这种方式建议在 Servlet Filter 过滤器使用，而不建议在接口中使用:Spring MVC 拦截器获取参数的底层也是该方式实现的:
+
+
+
+## 1.2	路径标识参数
+
+#### 传参：
+
+这种参数是期望获取数据的标识，一般为数据的唯一标识（主键，Primary Key），也可能是分页参数:
+
+比如：
+
+- 查询userId==1的用户：
+
+```javascript
+GET /api/user/1
+```
+
+- 查询第`1`页（每页`10`条）的用户：
+
+```javascript
+GET /api/users/1/10
+```
+
+
+
+#### 接收：
+
+在Spring MVC中，这种参数需要通过`@PathVariable`来处理：
+
+```java
+@GetMapping("/user/{userId}")
+public Rest<?> urlEncode(@PathVariable("userId") String userId) {
+    return RestBody.okData(userId);
+}
+```
+
+
+
+#### 注意：
+
+- DELETE 请求推荐使用路径参数
+
+
+
+# 2、POST/PUT 请求
+
+Post请求是向Server发送数据，而Get请求一般是向Server请求数据:
+
+**虽然用Get请求也能实现发送数据以修改/创建，但两者之间仍有很大差距:**
+
+#### **GET/POST差别：**
+
+1. GET 请求可以直接在浏览器直接请求当然也会保留在浏览器历史记录里，而 POST 不可以。
+2. GET 请求是天然幂等性的，而 POST 不是。
+   - =>**幂等性**：任意多次执行对资源本身所产生的影响均与一次执行的影响相同。
+   - 请求的幂等性 要求 请求不能修改数据库
+3. GET 请求会被浏览器主动缓存，而 POST 不会，除非手动设置。
+4. GET 请求只能进行 URI 编码，而 POST 支持多种编码方式。
+5. 对参数的数据类型，GET 只接受 ASCII 字符，而 POST 没有限制。
+6. GET 比 POST 更不安全，因为参数直接暴露在 URL 上，所以不能用来传递敏感信息。
+7. GET 参数通过 URL 传递，而且是有长度限制的，POST 放在请求体中，没有长度限制。
+
+
+
+## 2.1	表单提交
+
+POST最常见的场景是表单提交，比如登录：
+
+```html
+<form action="/login" method="POST">
+    First name: <input type="text" name="username"><br>
+    Last name: <input type="password" name="password"><br>
+  <input type="submit" value="登录">
+</form>
+```
+
+这是POST的默认使用方式。Content-Type`为`application/x-www-form-urlencoded
+
+#### 传参：
+
+参数的组织方式参考 GET 请求，但是！
+
+参数不是放在 URL 中而是放在请求体中，另外必须显式声明`Content-Type`为`application/x-www-form-urlencoded`。
+
+```http
+POST /login HTTP/1.1
+Host: localhost:8080
+Content-Type: application/x-www-form-urlencoded
+
+#参数:
+username=felord.cn&password=felord.cn
+```
+
+
+
+#### 接收：
+
+Spring MVC 中我们可以直接使用对象来接收：
+
+```java
+@PostMapping("/login")
+public Rest<?> doLogin(LoginDTO params) {
+    // params.username = felord.cn
+    // params.password = felord.cn
+    return RestBody.okData(params);
+}
+```
+
+
+
+## 2.2	Ajax POST请求
+
+目前大部分都是前后端分离了，所以**除了上传之外的 POST 请求外**，更建议将数据用**JSON**的形式提交给服务器。
+
+比如：
+
+#### 传参：
+
+当我们需要新增一个`name`为`felord`、`age`为`18`的`User`时建议这么做：
+
+```http
+POST /user/add HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "name": "felord",
+    "age": 18
+}
+```
+
+#### 接收：
+
+将参数封装为**JSON**并放入请求体提交给后端。
+
+```java
+@PostMapping("/user/add")
+public Rest<?> add(@RequestBody User user) {
+    return RestBody.okData(user);
+}
+```
+
