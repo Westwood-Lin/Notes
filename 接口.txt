@@ -1,0 +1,520 @@
+/user/update:
+    post:
+      tags: 
+        - user
+            summary: 用户更新个人信息
+            description: 修改个人简介、用户名等信息
+            parameters: 
+                - name: username
+            in: requestBody
+            description: 用户名
+            required: true
+            schema:
+              type: string
+
+        - name: password
+          in: requestBody
+          description: 用户密码
+          required: true
+          schema:
+            type: string
+            
+        - name: info
+          in: requestBody
+          description: 个人简介
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 更新成功
+          content:
+
+  /user/collect/getAll:
+    get:
+      tags: 
+        - user
+      summary: 获取用户收藏品
+      description: 获取用户收藏品
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 获取所有收藏品的id，格式为列表
+          content:
+
+  /user/follow/getAll:
+    get:
+      tags: 
+        - user
+      summary: 获取用户的关注列表
+      description: 获取用户收藏品
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 获取用户的所有关注用户id，格式为列表
+          content:
+
+  #TODO
+  /user/follow/add:
+    get:
+      tags: 
+        - user
+      summary: 用户A关注用户B，将B的id添加到A的关注列表中
+      description: 
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户A
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: 用户B
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 
+          content:
+          
+  /user/follow/delete:
+    get:
+      tags: 
+        - user
+      summary: 用户A不再关注用户B，将B的id从A的关注列表中删去
+      description: 
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户A
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: 用户B
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 
+          content:
+          
+    
+  /user/auction/getAll:
+    get:
+      tags: 
+        - user
+      summary: 获取用户正在参与的拍卖场次信息
+      description: 获取用户收藏品
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 获取用户的所有拍卖场此信息，格式为列表
+          content:
+
+  /user/order/getAll:
+    get:
+      tags: 
+        - user
+      summary: 获取用户已经拍下的拍品列表
+      description: 
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 获取用户已经拍下的拍品列表
+          content:
+
+  /user/history/get:
+    get:
+      tags: 
+        - user
+      summary: 获取用户的浏览历史
+      description: 
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 获取用户的浏览历史
+          content:  
+
+  /user/history/add:
+    get:
+      tags: 
+        - user
+      summary: 添加用户的浏览历史
+      description: 
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+        - name: auctionId
+          in: query
+          description: 一场拍卖ID
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 添加浏览历史
+          content:  
+          
+  /user/message/getAll:
+    get:
+      tags: 
+        - user
+      summary: 获取所有发送给用户的通知和信息
+      description: 
+      parameters: 
+        - name: userId
+          in: query
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 获取所有发送给用户的通知和信息
+          content:  
+    
+  /item/getAll:
+    get:
+      tags: 
+        - item
+      summary: 获取所有已发布的拍品
+      description: 管理员、网站首页展示用到
+      parameters: none
+            
+      responses:
+        200:
+          description: 获取所有已发布的拍品，格式为列表/数组
+          content:
+
+  /item/getByTag:
+    get:
+      tags: 
+        - item
+      summary: 获取符合该tag类的拍品
+      description: 管理员、网站首页、用户搜索展示用到
+      parameters: 
+        - name: tag
+          in: query
+          description: 拍品类别名
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 获取符合该tag类的拍品，格式为列表/数组
+          content:  
+
+  /item/getById:
+    get:
+      tags: 
+        - item
+      summary: 获取制定ID的拍品
+      description: 管理员、网站首页、用户搜索展示用到
+      parameters: 
+        - name: itemId
+          in: query
+          description: 拍品ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 获取制定ID的拍品
+          content:  
+
+  /item/getByName:
+    get:
+      tags: 
+        - item
+      summary: 根据拍品名搜索拍品
+      description: 管理员、网站首页、用户搜索展示用到
+      parameters: 
+        - name: itemName
+          in: query
+          description: 拍品ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 返回按拍品名搜索到的拍品
+          content:  
+
+  /item/add:
+    post:
+      tags: 
+        - item
+      summary: 添加拍品到用户的关注列表
+      description: 
+      parameters: 
+        - name: itemName
+          in: requestBody
+          description: 拍品名
+          required: true
+          schema:
+            type: string
+          
+        - name: itemInfo
+          in: requestBody
+          description: 拍品基本信息
+          required: true
+          schema:
+            type: string
+        
+        - name: url
+          in: requestBody
+          description: 该拍品所在拍卖网站
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 将拍品添加到用户的关注列表
+          content:  
+
+  /item/delete:
+    get:
+      tags: 
+        - item
+      summary: 从用户的拍品关注列表里删去该拍品
+      description: 
+      parameters: 
+        - name: itemId
+          in: query
+          description: 拍品ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 
+          content:  
+
+  /auction/add:
+    post:
+      tags: 
+        - item
+      summary: 在用户的拍卖关注列表里增加一场正在进行的拍卖
+      description: 
+      parameters: 
+        - name: userId
+          in: requestBody
+          description: 用户ID
+          required: true
+          schema:
+            type: string
+        
+        - name: auctionLink
+          in: requestBody
+          description: 拍卖进行的网站
+          required: true
+          schema:
+            type: string
+            
+        - name: auctionInfo
+          in: requestBody
+          description: 拍卖信息
+          required: true
+          schema:
+            type: string
+        
+      responses:
+        200:
+          description: ok
+          content:  
+
+  /auction/delete:
+    post:
+      tags: 
+        - item
+      summary: 在用户的拍卖关注列表里删除正在进行的拍卖
+      description: 
+      parameters: 
+        - name: auctionId
+          in: requestBody
+          description: 关注的拍卖场次ID
+          required: true
+          schema:
+            type: string
+        
+      responses:
+        200:
+          description: 删除成功
+          content:  
+
+  /auction/bid:
+    post:
+      tags: 
+        - item
+      summary: 根据拍卖信息，调用静态算法，为一场拍卖出价
+      description: 
+      parameters: 
+        - name: auctionId
+          in: requestBody
+          description: 拍卖场次ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 返回出价策略
+          content:  
+
+  /auction/bidAI:
+    post:
+      tags: 
+        - item
+            summary: 根据拍卖信息，调用AI模型算法，为一场拍卖出价
+            description: 
+            parameters: 
+                - name: auctionId
+            in: requestBody
+            description: 拍卖场次ID
+            required: true
+            schema:
+              type: string
+
+      responses:
+        200:
+          description: 返回出价策略
+          content:  
+
+  /order/getAll
+    post:
+      tags: 
+        - order
+      summary: 
+      description: 管理员用，获取网站上所有订单的信息
+      parameters: 
+        - name: auctionId
+          in: requestBody
+          description: 拍卖场次ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 返回网站上为所有用户的出价策略
+          content:  
+
+  /order/getByUserId
+    post:
+      tags: 
+        - order
+      summary: 
+      description: 用户使用，获取他参与过的所有出价拍卖场次信息
+      parameters: 
+        - name: auctionId
+          in: requestBody
+          description: 拍卖场次ID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: 返回网站为某位用户的出价策略
+          content:
+
+  /admin/carousel/set
+    post:
+      tags: 
+        - admin
+      summary: 
+      description: 管理员设置首页轮播图
+      parameters:
+            
+      responses:
+        200:
+          description: 返回网站为某位用户的出价策略
+          content:
+
+  /admin/login
+    post:
+      tags: 
+        - admin
+      summary: 
+      description: 管理员登录
+      parameters:
+            
+      responses:
+        200:
+          description: 
+          content:
+
+ /admin/notice/send
+    post:
+      tags: 
+        - admin
+      summary: 
+      description: 管理员向用户发送消息和通知
+      parameters:
+            
+      responses:
+        200:
+          description: 返回网站为某位用户的出价策略
+          content:
+
+ /admin/notice/sendAll
+    post:
+      tags: 
+        - admin
+      summary: 
+      description: 管理员向网站所有用户发送消息和通知
+      parameters:
+            
+      responses:
+        200:
+          description: 返回网站为某位用户的出价策略
+          content:     
