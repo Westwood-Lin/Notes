@@ -1,0 +1,16 @@
+vue：
+
+创建组件——路由关系——组件名；
+
+网页内容——网页布局——网页交互；
+
+组件库：
+
+- layout布局先抄
+- 然后抄栅栏Grid//或者叫Container
+- 明确这些以后加上弹性布局 Flex；
+- 注意属性：
+- display：flex； justify-content：、items-align；flex-direction：、
+- 搞完以后可以写布局css，或者写less；less可以嵌套，很舒服；
+- 布局可以优先写一行一行的，然后把一行一行的写在一起。
+- 网页交互：注意接口。

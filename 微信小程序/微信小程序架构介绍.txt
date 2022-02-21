@@ -1,0 +1,37 @@
+## 1.非常有用的文章：
+
+https://zhuanlan.zhihu.com/p/390207620知乎 微信小程序基础架构浅析
+
+https://cloud.tencent.com/developer/article/1533232
+
+https://www.xuanbiyijue.com/2021/03/13/ 微信小程序原理分析
+
+https://developers.weixin.qq.com/community/develop/article/doc/000a4c1620c188f3adf7db9ab5b413 小程序架构设计一
+
+https://developers.weixin.qq.com/community/develop/article/doc/000c8eba1ec3b8c7ce287954c53c13 小程序架构设计二
+
+https://developers.weixin.qq.com/miniprogram/dev/framework/quickstart/ 微信官方文档—小程序
+
+阮一峰：https://ruanyifeng.com/blog/2019/12/hybrid-app-concepts.html
+
+**Webview 是一个基于webkit的引擎，可以解析DOM 元素，展示html页面的控件，它和浏览器展示页面的原理是相同的，所以可以把它当做浏览器看待。**
+
+
+
+# 2.对双线程模型的理解
+
+微信小程序这个双线程模型，说白了，就是在正常的移动端hybrid应用下，隔离**页面内容的渲染层和小程序内容提供方的逻辑层**。分出渲染层的一个线程和内容提供方逻辑处理的一个线程。
+
+然后让两者的交互，通过微信小程序的底层平台来实现。
+
+微信提供了weixin markup language WXML 来替代HTML，WXML是对HTML5有选择性的限制、扩充和修改。有些新特性，包括数据绑定。
+
+然后微信还提供了两个线程的支持性库。
+
+因为隔离了渲染层和逻辑层，所以用户和小程序的交互有时需要4次通信（用户 请求 —> 平台 ，平台 —> 开发者模块， 开发者模块 —> 平台， 平台—>用户）。
+
+显然，4次通信开销太大。因此，为了减少开销，微信使用了一些HTML5的原生组件，如\<video>来减少通信次数。
+
+但是\<video>等HTML5原生组件的渲染层和WebView的渲染层不是同级的。导致原生组件会覆盖其他组件。
+
+微信经过努力，开发了一种将原生组件和WebView渲染层组件进行同层渲染的模式。可以说，一个问题套一个问题，这里解决了问题套出来的问题。
