@@ -1,0 +1,159 @@
+# 第一章	Java概述
+
+主要内容：
+
+- Java程序设计平台
+- 发展简史
+- Java “白皮书” 关键术语
+- 关于Java的常见误解
+- Java applet 与 Internet
+
+重要性：低
+
+掌握程度：了解，有印象
+
+
+
+## 1.1	Java程序设计平台
+
+### Java如今最大的优点：生态
+
+- 超级强大、功能丰富、发展成熟的Java生态
+  - 出色的运行环境、Java框架、庞大的库……
+  - Spring
+
+曾经吹过的部分优点：
+
+- GC 垃圾回收
+- 可移植性
+- ……
+
+
+
+## 1.2	Java “白皮书”的关键术语
+
+### 11个关键术语：
+
+3个S、2个T、2个D、一个“IOP”
+
+（奇怪的记忆联想：在3S店里，1个op正在退订2条短信？）
+
+- Interpret 解释型语言：
+  - 严格来说，Java语言是编译和解释共存，Java源码被编译为字节码（以.class结尾)，然后Java解释器（JVM）再直接执行Java字节码。
+  - 编译为字节码实际上赋予Java跨平台、可移植的特性。
+- OOP  面向对象编程
+  - 面向对象的3个核心概念是封装、继承、多态
+  - Java以类封装对象的属性和行为，类之间可以有继承关系，函数支持重载、重写，同时还抽象出了接口类，同时Java也支持模板和泛型。
+  - Java与C++不同点在于，C++支持多重继承，而 Java用明确的接口类来取代之。
+- Performance  性能
+  - 编译器会做代码优化
+- Simple 简单
+  - 主要是对比C++来说，有GC，没有指针/操作符重载/多重继承/结构/联合等
+- Strong 健壮（Robust？）
+  - 有GC、无指针，有助于防止内存泄漏和其他危险
+  - 异常、断言机制
+  - 静态强类型，编译器检查
+- Safe 安全
+  - Java对检查越界、堆栈溢出、未授权访问等行为做了检查和防范
+  - Java的安全模型有漏洞，不是100%安全。
+- Distributed 分布式
+  - 有丰富的例程库来支持TCP/IP协议，包括最常见的HTTP/FTP协议。
+  - Java Web
+- Dynamic  动态性
+  - 这一条主要是针对C++来说的。Java对热部署支持较好
+  - 本质是因为JVM里的类加载器加载机制。
+  - 这并不是说Java是一门动态语言！**Java是一种静态强类型的语言！**（编译期进行严格的类型检查）
+- Thread 多线程和并发性
+  - Java 对多线程编程有很好的支持
+- Transplant 移植性、体系结构中立、跨平台性
+  - 得益于字节码这种中间格式和JVM解释执行的特性，Java可以做到 “write once，run anywhere”
+
+
+
+### 一些闲话：
+
+> 白皮书：
+>
+> www.oracle.com/technetwork/java/langenv-140151.html
+>
+> 11个关键术语概述：
+>
+> http://horstmann.com/corejava/java-an-overview/7Gosling.pdf
+>
+> 微软在Java推出以后，曾经推出一款名为J++的语言，后来演变为所谓C#。也是一门解释型语言。
+
+## 1.3	Java Applet 与 Internet
+
+applet是一种**已经被淘汰的**内嵌入HTML网页中的java程序。
+
+它的运行流程是：
+
+- 用户从Server上获取Java Applet程序和HTML网页内容
+- 用户打开浏览器，当然，浏览器的引擎需要支持对Java的处理
+- 浏览器允许Applet程序，applet程序在网页上就如同插入了一张图片，文字内容环绕在Applet周围；
+- Applet允许用户进行交互
+
+然而：
+
+- Java本身的兼容性问题、安全性问题
+- Flash的强势
+- 浏览器的支持
+
+等因素，使得Applet逐渐被Flash所淘汰。
+
+
+
+## 1.4	Java发展简史
+
+1992年，Sun公司内部成立了一个Green项目，让他们设计一种为嵌入式设备服务的小型语言。
+
+他们搞出来一个OAK语言，然后搞了很多嵌入式设备出来，比如有线电视转换盒，但长期没人要。
+
+后来这个项目组改名First Person，1993-1994年基本还是一无所获。
+
+到1995年，随着浏览器和Internet在美国的大热。Sun公司让他们去蹭热点，用OAK语言开发一个浏览器。
+
+然后他们发现OAK已经被注册商标了，就改名Java语言。
+
+他们开发了叫做HotJava的浏览器，浏览器支持java程序，也就是支持Java Applet，Applet配合HTML语言，可以在网页上实现动态的交互行为。
+
+1995年的Sun公司展览上，HotJava、Applet、Java爆红。
+
+**1996**年，发布JDK 1.0；后面陆续发布 1.1 和 1.2 , 因为浏览器端出现了Flash这样强大的竞争对手以及HTML、CSS、JavaScript等的出现和完善，Java逐渐向服务端业务靠拢。
+
+到**2004**年，JDK 5.0 发布。这是一个里程碑式的版本。主要因为他支持：foreach、泛型、枚举等现代特性。
+
+到**2014**年，JDK 8.0发布。这更是一个巨大的里程碑。到今天2022年，Java17发布前，Java8基本还是一统江湖。Java8以lambda表达式、日期和时间库等众多特性大大优化了使用体验。
+
+未来，Java17可能是又一个里程碑。
+
+
+
+### 有意思的事情
+
+​	我发现James Gosling虽然很牛逼，但是成就也就开发了Java这种语言。
+
+​	至于Patrick Naughton这家伙就更是声名狼藉了……这已经是人品有问题了……被FBI抓了可还行
+
+> ## Sex crime arrest and conviction[[edit](https://en.wikipedia.org/w/index.php?title=Patrick_Naughton&action=edit&section=5&editintro=Template:BLP_editintro)]
+>
+> On Sept. 14, 1999, Naughton flew from Seattle to Los Angeles on a private [Disney](https://en.wikipedia.org/wiki/Disney) jet.[[11\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-fall-11) expecting a five-foot, blonde haired 13-year-old girl to wait on the pier near the roller coaster, carrying a green backpack as instructed by Naughton.[[2\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-Prosecuting_Cyber-Pedophiles-2) Naughton had written to her about love and sex and that he "wanted to get [her] alone in his hotel room and have [her] strip naked for him".[[2\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-Prosecuting_Cyber-Pedophiles-2) Naughton had arranged this meeting, posing as "Hot Seattle", his online predator handle[[3\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-CBS_The_Fantasy_Defense-3) in an online chat room called "dad&daughtersex."[[12\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-dad&daughtersex-12) The "girl" was actually an FBI agent.[[6\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-NYTsentence-6)
+>
+> Two days later, he was arrested by the [FBI](https://en.wikipedia.org/wiki/FBI) and was charged with traveling in interstate commerce with the intent to have sex with a minor, in violation of [18 U.S.C. §2423(b)](https://en.wikipedia.org/wiki/Ages_of_consent_in_the_United_States#Federal_laws).[[3\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-CBS_The_Fantasy_Defense-3)[[4\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-wired-4)[[5\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-CEO:_Naughton_said_'I_did_it'-5) After a trial ended in a hung jury, Naughton struck a plea agreement where he took a reduced sentence and admitted that he traveled from Seattle to Los Angeles last September with a "dominant purpose" to engage in sexual acts with "KrisLA", an online chat buddy he believed was a 13-year-old girl.[[1\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-guilty-1) He ended up serving no prison time, in exchange for working for the FBI for free for a year.[[13\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-13)[[14\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-moglen-14)
+>
+> ### Novel defense[[edit](https://en.wikipedia.org/w/index.php?title=Patrick_Naughton&action=edit&section=6&editintro=Template:BLP_editintro)]
+>
+> His line of defense was that he claimed he was persuaded to participate online in a ritualized sexual role-playing exercise, dealing with a mature woman acting as a girl.[[14\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-moglen-14) His then-novel defense, became known as the [fantasy defense](https://en.wikipedia.org/wiki/Fantasy_defense) for pedophiles.[[2\]](https://en.wikipedia.org/wiki/Patrick_Naughton#cite_note-Prosecuting_Cyber-Pedophiles-2)
+
+
+
+
+
+## 1.5	Java常见误解
+
+书这里的我都想直接略过……
+
+Java是HTML的扩展？XML可以替代Java？Java是易学习的程序设计语言？Java适用于所有平台？Java是专用的？Java太慢了？Java程序都在网页中运行？Java有重大安全漏洞？JavaScript是Java简易版？Java和Internet设备可以取代桌面计算机（操作系统？）
+
+这些问题在9x年代Java刚发布时还可以，如今看来真是连看的必要都没有。
+
