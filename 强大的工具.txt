@@ -1,0 +1,8 @@
+想到哪儿就记到哪儿。
+
+- mybatis-plus	自动生成sql语句，妈妈再也不担心我的sql了
+
+- IDE: IDEA
+  - IDEA codota	非常强大的代码补全
+- CI/CD: Jenkins
+- VCS:  Git Github Gitee Gitlab

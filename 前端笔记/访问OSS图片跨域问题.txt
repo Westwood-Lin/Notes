@@ -1,0 +1,89 @@
+# 1.背景
+
+3.4写前端时，发现vue-cropper组件访问OSS图片会报CORS跨域问题。
+
+# 2.refer
+
+[(106条消息) 使用vue-cropper时，展示oss图片出现跨域问题解决_IceStreamLab-CSDN博客_vue-cropper 图片跨域](https://blog.csdn.net/Mr_Mocha/article/details/104024414?ops_request_misc=%7B%22request%5Fid%22%3A%22164633064116780274146307%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=164633064116780274146307&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-1-104024414.es_vector_control_group&utm_term=vue+cropper+跨域&spm=1018.2226.3001.4187)
+
+
+
+# 3.思路
+
+```解决思路
+直接展示https图片会出现跨域问题，而其他地方不会，说明不是服务端的问题，而且在这种情况下，从oss控制台配置也没用。
+那么，采用另外一种思路，将图片先转换为base64格式，再进行赋值展示。
+```
+
+
+
+# 4.代码
+
+```html
+<vue-cropper ref="cropper" id="cropper"
+             :img="options.img" :info="true" :autoCrop="options.autoCrop"
+             :autoCropWidth="options.autoCropWidth" :autoCropHeight="options.autoCropHeight"
+             :fixedBox="options.fixedBox" @realTime="realTime">
+</vue-cropper>
+
+```
+
+```javascript
+data() {
+    return {
+        options: {
+            // 裁剪图片的地址
+            img: '',
+            // 是否默认生成截图框
+            autoCrop: true,
+            // 默认生成截图框宽度
+            autoCropWidth: 200,
+            // 默认生成截图框高度
+            autoCropHeight: 200,
+            // 固定截图框大小 不允许改变
+            fixedBox: true
+        }
+    }
+}
+
+```
+
+```javascript
+methods: {
+     // 打开更换头像modal框
+	edit() {
+		this.visible = true;
+		let _this = this;
+		// 设置头像base64
+         // 其中this.avatar为当前头像
+		this.setAvatarBase64(this.avatar, (base64) => {
+			_this.options.img = base64;
+		});
+	},
+	// 设置头像base64
+	setAvatarBase64(src, callback) {
+		let _this = this;
+		let image = new Image();
+		// 处理缓存
+		image.src = src + '?v=' + Math.random();
+		// 支持跨域图片
+		image.crossOrigin = "*";
+		image.onload = function () {
+			let base64 = _this.transBase64FromImage(image);
+			callback && callback(base64);
+		}
+	},
+	// 将网络图片转换成base64格式
+	transBase64FromImage(image) {
+		let canvas = document.createElement("canvas");
+		canvas.width = image.width;
+		canvas.height = image.height;
+		let ctx = canvas.getContext("2d");
+		ctx.drawImage(image, 0, 0, image.width, image.height);
+		// 可选其他值 image/jpeg
+		return canvas.toDataURL("image/png");
+	}
+}
+
+```
+

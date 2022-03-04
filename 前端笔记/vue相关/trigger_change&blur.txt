@@ -1,0 +1,27 @@
+```vue
+v-decorator
+```
+
+https://blog.csdn.net/qq_22182989/article/details/103728781
+
+#### element ui 表单验证触发方式：trigger: ‘change‘和trigger: ‘blur‘区别
+
+
+
+## trigger: 'blur'
+
+blur失去焦点
+
+比如输入框里。校验文本框是否为空
+
+## trigger: 'change'
+
+change数据改变
+
+比如
+
+下图这些。需要手动选择的东西，用change
+
+
+
+## 没有进行任何输入时，不会触发change，但一定会触发blur事件

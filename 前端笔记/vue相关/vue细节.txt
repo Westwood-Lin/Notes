@@ -1,0 +1,171 @@
+# 1.export default
+
+name:	对其他vue组件和vue环境暴露出的该组件名。
+
+
+
+# 2.
+
+ant-design语法：创建一个form对象
+
+```
+form: this.$form.createForm(this),
+```
+
+
+
+
+
+```
+vue里的computed
+```
+
+https://cn.vuejs.org/v2/guide/computed.html
+
+# 3.[计算属性](https://cn.vuejs.org/v2/guide/computed.html#计算属性)
+
+模板内的表达式非常便利，但是设计它们的初衷是用于简单运算的。在模板中放入太多的逻辑会让模板过重且难以维护。例如：
+
+```
+<div id="example">
+  {{ message.split('').reverse().join('') }}
+</div>
+```
+
+在这个地方，模板不再是简单的声明式逻辑。你必须看一段时间才能意识到，这里是想要显示变量 `message` 的翻转字符串。当你想要在模板中的多处包含此翻转字符串时，就会更加难以处理。
+
+所以，对于任何复杂逻辑，你都应当使用**计算属性**。
+
+
+
+其他要点：
+
+计算属性和计算方法对比（属性会进行响应式缓存，方法不会缓存）；
+
+### 计算属性和侦听属性的区别
+
+Vue 提供了一种更通用的方式来观察和响应 Vue 实例上的数据变动：**侦听属性**。当你有一些数据需要随着其它数据变动而变动时，你很容易滥用 `watch`——特别是如果你之前使用过 AngularJS。然而，通常更好的做法是使用计算属性而不是命令式的 `watch` 回调。细想一下这个例子：
+
+```
+<div id="demo">{{ fullName }}</div>
+var vm = new Vue({
+  el: '#demo',
+  data: {
+    firstName: 'Foo',
+    lastName: 'Bar',
+    fullName: 'Foo Bar'
+  },
+  watch: {
+    firstName: function (val) {
+      this.fullName = val + ' ' + this.lastName
+    },
+    lastName: function (val) {
+      this.fullName = this.firstName + ' ' + val
+    }
+  }
+})
+```
+
+上面代码是命令式且重复的。将它与计算属性的版本进行比较：
+
+```
+var vm = new Vue({
+  el: '#demo',
+  data: {
+    firstName: 'Foo',
+    lastName: 'Bar'
+  },
+  computed: {
+    fullName: function () {
+      return this.firstName + ' ' + this.lastName
+    }
+  }
+})
+```
+
+好得多了，不是吗？
+
+### [计算属性的 setter](https://cn.vuejs.org/v2/guide/computed.html#计算属性的-setter)
+
+计算属性默认只有 getter，不过在需要时你也可以提供一个 setter：
+
+```
+// ...
+computed: {
+  fullName: {
+    // getter
+    get: function () {
+      return this.firstName + ' ' + this.lastName
+    },
+    // setter
+    set: function (newValue) {
+      var names = newValue.split(' ')
+      this.firstName = names[0]
+      this.lastName = names[names.length - 1]
+    }
+  }
+}
+// ...
+```
+
+现在再运行 `vm.fullName = 'John Doe'` 时，setter 会被调用，`vm.firstName` 和 `vm.lastName` 也会相应地被更新。
+
+
+
+### 侦听器
+
+使用 `watch` 选项允许我们执行异步操作 (访问一个 API)，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
+
+
+
+
+
+# 4.JS中的回调函数
+
+ｖ-decorator里的validator必须有callback函数。https://www.antdv.com/components/form-cn/#components-form-demo-other-form-controls
+
+### 三.回调函数是实现异步编程的利器
+
+在程序运行中，当某些请求过程漫长，我们有时没必要选择等待请求完成继续处理下一个任务，这时使用回调函数进行异步处理可以大大提高程序执行效率。例如：AJAX请求。若是使用回调函数进行处理，代码就可以继续进行其他任务，而无需空等。实际开发中，经常在javascript中使用异步调用！
+ 下面有个使用AJAX加载XML文件的示例，并且使用了call()函数，在请求对象（requested object）上下文中调用回调函数。
+
+
+
+### 4.2 “回调地狱”问题以及解决方案
+
+这么多回调嵌套，我还没遇到过。下面内容是直接从网上copy过来，大家看下，还是很好理解的。
+ 在执行异步代码时，无论以什么顺序简单的执行代码，经常情况会变成许多层级的回调函数堆积以致代码变成下面的情形。这些杂乱无章的代码叫做回调地狱因为回调太多而使看懂代码变得非常困难。我从node-mongodb-native，一个适用于Node.js的MongoDB驱动中拿来了一个例子。这段位于下方的代码将会充分说明回调地狱：
+
+
+
+```jsx
+var p_client = new Db('integration_tests_20', new Server("127.0.0.1", 27017, {}), {'pk':CustomPKFactory});
+   p_client.open(function(err, p_client) {
+       p_client.dropDatabase(function(err, done) {
+           p_client.createCollection('test_custom_key', function(err, collection) {
+               collection.insert({'a':1}, function(err, docs) {
+                   collection.find({'_id':new ObjectID("aaaaaaaaaaaa")}, function(err, cursor) {
+                       cursor.toArray(function(err, items) {
+                           test.assertEquals(1, items.length);
+ 
+                           // Let's close the db
+                           p_client.close();
+                       });
+                   });
+               });
+           });
+       });
+   });
+```
+
+你应该不想在你的代码中遇到这样的问题，当你当你遇到了-你将会是不是的遇到这种情况-这里有关于这个问题的两种解决方案。
+
+给你的函数命名并传递它们的名字作为回调函数，而不是主函数的参数中定义匿名函数。
+ 模块化L将你的代码分隔到模块中，这样你就可以到处一块代码来完成特定的工作。然后你可以在你的巨型应用中导入模块。
+
+
+
+作者：gavin_zhuo
+链接：https://www.jianshu.com/p/84cc8732689c
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。

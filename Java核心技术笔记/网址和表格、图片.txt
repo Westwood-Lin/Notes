@@ -1,0 +1,20 @@
+# 1.V1 Chapter1
+
+> java白皮书：
+>
+> www.oracle.com/technetwork/java/langenv-140151.html
+>
+> Java 11个关键术语概述：
+>
+> http://horstmann.com/corejava/java-an-overview/7Gosling.pdf
+>
+> 微软在Java推出以后，曾经推出一款名为J++的语言，后来演变为所谓C#。也是一门解释型语言。
+
+
+
+# 2.V1 Chapter2
+
+获得更多java类库的源码：`http://openjdk.java.net`。
+
+文档： `www.oracle.com/technetwork/java/javase/downloads`
+

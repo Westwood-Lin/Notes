@@ -1,0 +1,93 @@
+# 0.Axios介绍
+
+https://www.axios-http.cn/docs/intro
+
+# 1.用Axios如何发起POST请求
+
+发起一个 `POST` 请求
+
+
+
+```javascript
+axios.post('/user', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+```
+
+其中.then()是正常return；.catch()是捕获异常；
+
+
+
+# 2.一些示例
+
+## 2.1	
+
+```javascript
+export const uploadAll = file => {
+    return axios.post(`${API_VERSION}/upload`, file, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then(res => {
+        return res.data
+    })
+}
+```
+
+
+
+## 2.2
+
+```javascript
+export function login (parameter) {
+  return axios.post({
+    // 用户登录接口改成自己的
+    url: api.UserLogin,
+    method: 'post',
+    data: parameter
+  })
+}
+```
+
+
+
+
+
+# 3.请求配置
+
+https://www.axios-http.cn/docs/req_config
+
+请求配置里data和params的区别：
+
+https://blog.csdn.net/qq_41499782/article/details/118916901
+
+
+
+
+
+# 4.一些细节
+
+## 4.1
+
+“内容类型：application / json; charset = utf-8”真的是什么意思？
+
+https://qastack.cn/programming/9254891/what-does-content-type-application-json-charset-utf-8-really-mean
+
+发送“字符集”参数不正确且毫无意义。参见RFC 8259，第11节，最后一句。
+
+
+
+## 4.2 URL中引用变量
+
+注意这样的写法：\`${USER_MODULE}`。
+
+
+
+# 5.
