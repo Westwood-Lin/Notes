@@ -1,0 +1,4 @@
+1.refer
+
+[(106条消息) vue动态绑定ref（使用变量）以及获取_一只前端小菜鸟-CSDN博客_动态绑定ref](https://blog.csdn.net/qq_43363884/article/details/102891279?ops_request_misc=%7B%22request%5Fid%22%3A%22164638621916780264054387%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=164638621916780264054387&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-102891279.es_vector_control_group&utm_term=vue+ref+变量&spm=1018.2226.3001.4187)
+

@@ -1,0 +1,48 @@
+**方法1：**清空已有数据，并且将自增自段恢复从1开始计数 
+truncate  table  表名   
+
+好处： 简单, AUTO_INCREMENT 值重新开始计数。
+
+**方法2：**不清空已有数据，但将自增自段恢复从1开始计数 
+dbcc  checkident(表名,RESEED,0)
+
+关于方法2： dbcc  checkident(表名,RESEED,0)  参数3是数字几，就表示从数字几开始计数
+
+select * from dbo.Dim_Currency
+delete  from dbo.Dim_Currency
+dbcc checkident(Dim_Currency,reseed,0)  --重新置位identity属性的字段，让其下个值从1開始
+
+
+
+**方法3：**
+
+**重置 MySQL 自增列 AUTO_INCREMENT 初时值
+**注意, 使用以下任意方法都会将现有数据删除.
+delete from tb1;
+ALTER TABLE tbl AUTO_INCREMENT = 100;
+（好处, 可以设置 AUTO_INCREMENT 为任意值开始）
+提示:如果表列和数据很多, 速度会很慢, 如90多万条, 会在10分钟以上.
+
+
+
+**怎么重置mysql的自增列**
+
+1. 支持设置自增列的值
+
+ALTER TABLE table_name AUTO_INCREMENT = 1;
+不过这种方式自能设置大于当前使用的值，不能设置小于等于当前已经使用的自增列的值。myisam如果设置小于等于，则自增列的值会自动设置为
+当前最大值加1。innodb则不会改变。
+
+
+
+2. 通过TRUNCATE把自增列设置为0，从MySQL 5.0.13开始TRUNCATE就能重置自增列为0.myisam和innode都是如此。
+
+TRUNCATE TABLE table_name;
+
+
+
+3. drop和create重建表方式重置自增列为0
+
+DROP TABLE table_name;
+CREATE TABLE table_name { ... };
+

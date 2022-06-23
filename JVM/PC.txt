@@ -1,0 +1,4 @@
+# 1.定义
+
+PC program counter regisret 程序计数器
+

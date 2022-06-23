@@ -1,0 +1,27 @@
+职责：
+
+前端 + 后端 Controller Service
+
+
+
+问题：
+
+1.跨域
+
+网络图片转成base64操作，解决图片跨域问题
+
+
+
+2.搜索问题
+
+Elasticsearch简称ES，是一个建立在全文搜索引擎**Apache Lucene**基础上的**实时的分布式搜索及分析引擎**。
+
+Logstash是一个具有实时传输能力的数据收集引擎，由三个组件构成,其中**input**组件负责收集数据，常用的数据源包括文件类型、数据库类型；**filter**组件是用来用来过滤数据；**output**组件是Logstash的输出组件，可以输出到指定的**文件**，指导的**网络端口**或者输出到**ES**。
+
+
+
+ElasticSearch 使用 Logstash 从 MySQL 中同步数据
+
+通过Logstash将数据库中的业务数据导入到elasticsearch中，所以Logstash数据来源为数据库，输出为我们安装好的ES。
+
+Elasticsearch 使用的是一种名为倒排索引的结构，这一结构的设计可以允许十分快速地进行全文本搜索。

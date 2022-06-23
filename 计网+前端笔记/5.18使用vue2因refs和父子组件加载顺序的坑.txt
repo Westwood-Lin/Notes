@@ -1,0 +1,39 @@
+# 因为2段代码，花了6小时：
+
+父组件ReportList=>子组件BasicOverview=>子组件CascadeColumn
+
+流程：
+
+父组件ReportList在created()里向后端请求数据loadAll()，然后将一些数据和标记传给BasicOverview，BasicOverview需要根据标记判断是否能够创建柱状图，如果能，就需要通过refs.CascadeColumn.create方法创建柱状图，也就是调用它自己的子组件的方法。
+
+涉及：异步、refs、父子组件通信、父子组件创建流程
+
+> BasicOverview.vue里
+>
+> 代码1：
+>
+> <img src="img/image-20220519000054076.png" alt="image-20220519000054076" style="zoom:67%;" />
+>
+> 代码2：
+>
+> <img src="img/6NPMA3B5UU8Q$D7KXSL571O.png" alt="img" style="zoom:67%;" />
+>
+> 代码3：
+>
+> <img src="img/9S{X5O4USWGZZ@LXKTS239Q.jpg" alt="img" style="zoom:50%;" />
+
+# 问题：
+
+[(107条消息) vue父组件通过$refs调用子组件方法时报undefined的问题_南北极之间的博客-CSDN博客](https://blog.csdn.net/qq_22182989/article/details/115344517)
+
+
+
+## vue父组件通过$refs调用子组件方法时报undefined
+
+![img](img/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzIyMTgyOTg5,size_16,color_FFFFFF,t_70.png)
+
+[vue父组件异步数据子组件接收遇到的坑 - bling-bling - 博客园 (cnblogs.com)](https://www.cnblogs.com/liujingjing/p/10737285.html)
+
+[(107条消息) vue父组件调用子组件this.$refs报错，undefined、not a function问题解决方法_银鞍照白马的博客-CSDN博客_vue调用子组件方法显示undefined](https://blog.csdn.net/weixin_41698051/article/details/112670188)
+
+[(107条消息) vue 父组件调用子组件方法undefined_我是小路路呀的博客-CSDN博客](https://blog.csdn.net/weixin_43845550/article/details/111129677?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-12-111129677-blog-112670188.pc_relevant_baidufeatures_v8&spm=1001.2101.3001.4242.7&utm_relevant_index=15)
